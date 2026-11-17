@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+*.log
+.DS_Store
+.data/
+media/
+apps/api/media/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+# FFmpeg fMP4 init segments can land in the working directory during ad-hoc encoding
+init.mp4

@@ -1,0 +1,26 @@
+{
+  "name": "lumen-academy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lumen Academy — MERN learning platform with FFmpeg HLS pipeline, live classes, quizzes, certificates and instructor revenue tooling.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c magenta,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm run dev --workspace @lumen/api",
+    "dev:web": "npm run dev --workspace @lumen/web",
+    "worker": "npm run worker --workspace @lumen/api",
+    "seed": "npm run seed --workspace @lumen/api",
+    "build": "npm run build --workspace @lumen/web",
+    "typecheck": "npm run typecheck --workspace @lumen/api && npm run typecheck --workspace @lumen/web",
+    "test": "npm run test --workspace @lumen/api"
+  },
+  "devDependencies": {
+    "concurrently": "latest"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
