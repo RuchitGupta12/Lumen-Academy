@@ -1,3 +1,4 @@
+import os from 'node:os';
 import path from 'node:path';
 import dotenv from 'dotenv';
 
@@ -14,6 +15,8 @@ const int = (value: string | undefined, fallback: number) => {
 };
 
 export const ROOT_DIR = path.resolve(__dirname, '../../../..');
+
+export const isVercel = process.env.VERCEL === '1' || Boolean(process.env.VERCEL_ENV);
 
 // Vercel exposes the deployment host at runtime; use it as the default browser
 // origin so CORS, Stripe redirects and certificate links work without extra config.
@@ -32,8 +35,10 @@ export const env = {
 
   mediaDriver: (process.env.MEDIA_DRIVER ?? 'local') as 'local' | 's3',
   mediaOpen: bool(process.env.MEDIA_OPEN, false),
-  mediaRoot: process.env.MEDIA_ROOT ?? path.join(ROOT_DIR, 'media'),
-  dataRoot: path.join(ROOT_DIR, '.data'),
+  // Vercel functions have a read-only app directory; use the writable temp dir
+  // if local media is ever selected there (S3/CloudFront is the real fix).
+  mediaRoot: process.env.MEDIA_ROOT ?? path.join(isVercel ? os.tmpdir() : ROOT_DIR, 'lumen-media'),
+  dataRoot: path.join(isVercel ? os.tmpdir() : ROOT_DIR, '.data'),
 
   aws: {
     region: process.env.AWS_REGION ?? 'us-east-1',

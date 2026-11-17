@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import mongoose from 'mongoose';
-import { env } from './env';
+import { env, isVercel } from './env';
 import { logger } from '../lib/logger';
 
 const LOCAL_MONGO_PORT = 27099;
@@ -24,6 +24,12 @@ export async function connectDb() {
     await mongoose.connect(env.mongoUri, { serverSelectionTimeoutMS: 10_000 });
     logger.info({ driver: 'external' }, 'mongodb connected');
     return;
+  }
+
+  if (isVercel) {
+    throw new Error(
+      'MONGODB_URI is required on Vercel: the bundled MongoDB needs a writable local filesystem and a listening port. Set MONGODB_URI to an Atlas connection string.',
+    );
   }
 
   try {

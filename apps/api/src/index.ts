@@ -1,18 +1,31 @@
 import http from 'node:http';
 import { createApp } from './app';
 import { connectDb, disconnectDb } from './config/db';
-import { env, isLivekitEnabled, isStripeEnabled } from './config/env';
+import { env, isLivekitEnabled, isVercel, isStripeEnabled } from './config/env';
 import { logger } from './lib/logger';
 import { ensureMediaDirs } from './lib/media';
 import { initSocket } from './realtime/socket';
+
+// Export the Express app so Vercel's Express runtime can wrap it. Locally we
+// also open a port so `npm run dev` / `npm start` work as before.
+export const app = createApp();
+export default app;
 
 async function main() {
   ensureMediaDirs();
   await connectDb();
 
-  const app = createApp();
   const server = http.createServer(app);
-  initSocket(server);
+  try {
+    initSocket(server);
+  } catch (error) {
+    logger.warn({ error }, 'socket.io unavailable in this runtime');
+  }
+
+  if (isVercel) {
+    logger.info('lumen api ready (vercel functions)');
+    return;
+  }
 
   server.listen(env.port, () => {
     const rows = [

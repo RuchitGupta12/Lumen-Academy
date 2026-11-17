@@ -14,8 +14,14 @@ export const mediaPaths = {
 };
 
 export function ensureMediaDirs() {
-  for (const dir of Object.values(mediaPaths)) fs.mkdirSync(dir, { recursive: true });
-  fs.mkdirSync(env.dataRoot, { recursive: true });
+  try {
+    for (const dir of Object.values(mediaPaths)) fs.mkdirSync(dir, { recursive: true });
+    fs.mkdirSync(env.dataRoot, { recursive: true });
+  } catch (error) {
+    // Vercel functions and other read-only filesystems cannot create these
+    // directories. Local media is unsupported there; S3/CloudFront is used.
+    logger.warn({ error }, 'skipping local media directory creation');
+  }
 }
 
 export const hlsDir = (videoId: string) => path.join(mediaPaths.hls, videoId);
