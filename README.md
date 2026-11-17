@@ -227,6 +227,7 @@ Results are recorded in [`docs/test-report.md`](docs/test-report.md):
 
 ## Notes and known constraints
 
+- **Vercel:** set Root Directory to the repository root, Build command `npm run build`, Output directory `apps/web/dist`, Install command `npm install`. `@lumen/shared` is also resolved through a TypeScript path mapping and a Vite alias, so a build from `apps/web` alone works too.
 - Prices are stored in **integer cents** everywhere; the UI formats them.
 - Certificate completion requires **100% of lessons** (a 90% watch threshold marks an individual video as watched).
 - Seed covers and lesson videos are generated locally, so the demo has no third-party asset dependencies.
