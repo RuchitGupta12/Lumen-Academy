@@ -1,4 +1,5 @@
 import http from 'node:http';
+import express from 'express';
 import { createApp } from './createApp';
 import { connectDb, disconnectDb } from './config/db';
 import { env, isLivekitEnabled, isVercel, isStripeEnabled } from './config/env';
@@ -7,7 +8,7 @@ import { ensureMediaDirs } from './lib/media';
 import { initSocket } from './realtime/socket';
 
 // Export the Express app so Vercel's Express runtime can wrap it.
-export const app = createApp();
+export const app: express.Express = createApp();
 export default app;
 
 // apps/api/package.json declares "type": "commonjs". Vercel's Express runtime
