@@ -13,7 +13,6 @@ export default app;
 
 async function main() {
   ensureMediaDirs();
-  await connectDb();
 
   const server = http.createServer(app);
   try {
@@ -23,9 +22,18 @@ async function main() {
   }
 
   if (isVercel) {
-    logger.info('lumen api ready (vercel functions)');
+    try {
+      await connectDb();
+      logger.info('lumen api ready (vercel functions)');
+    } catch (error) {
+      // Keep the function alive: /health still answers and Runtime Logs show
+      // the real MongoDB error instead of a generic invocation failure.
+      logger.error({ error }, 'mongodb connection failed on vercel');
+    }
     return;
   }
+
+  await connectDb();
 
   server.listen(env.port, () => {
     const rows = [
@@ -51,5 +59,5 @@ async function main() {
 
 main().catch((error) => {
   logger.error({ error }, 'failed to start api');
-  process.exit(1);
+  if (!isVercel) process.exit(1);
 });
