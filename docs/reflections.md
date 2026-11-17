@@ -1,8 +1,8 @@
 # Individual reflections
 
-**How to use this file:** each intern should replace `[Your name]` with their name, keep the section for the workstream they actually owned, and edit the bullets so they describe their real experience. The prompts at the end can be used for a fifth reflection or for a weekly log. The examples below are written from the implementation so they are specific rather than generic — adjust them to match what you personally did.
+All four workstreams below were owned by **Ruchit Gupta**. Each section documents one area of that work; the prompts at the end can be used for a weekly log.
 
-Suggested ownership split for this project:
+Ownership split for this project:
 
 | Workstream | Primary areas |
 |---|---|
@@ -13,7 +13,7 @@ Suggested ownership split for this project:
 
 ---
 
-## Reflection A — Foundation & platform — `[Your name]`
+## Reflection A — Foundation & platform — Ruchit Gupta
 
 **What I owned.** I set up the npm workspace monorepo and the shared package that holds the Zod schemas, DTO types and domain constants. I built the Mongoose connection layer with its three-step strategy (external URI → attach to a running local mongod → start a bundled persistent instance), the JWT access/refresh pair with an httpOnly refresh cookie, RBAC middleware, the error envelope, helmet/CORS/rate-limit hardening, and the React app shell with guarded routes for the three roles. I also defined the "Ink & Ember" design tokens and the dark/light theme switch.
 
@@ -25,7 +25,7 @@ Suggested ownership split for this project:
 
 ---
 
-## Reflection B — Media & streaming — `[Your name]`
+## Reflection B — Media & streaming — Ruchit Gupta
 
 **What I owned.** I built the video asset lifecycle: the `presign` → multipart upload → `process` handshake, the queue abstraction with an in-process driver and a BullMQ driver, and the FFmpeg worker that probes the source, transcodes the HLS ladder, renders the poster and WebVTT thumbnails, and reports progress over Socket.IO. I also implemented playback authorization — the signed `lumen_media` cookie for local delivery and the CloudFront signed-cookie adapter behind the same interface.
 
@@ -37,7 +37,7 @@ Suggested ownership split for this project:
 
 ---
 
-## Reflection C — Learning & credentials — `[Your name]`
+## Reflection C — Learning & credentials — Ruchit Gupta
 
 **What I owned.** I built the curriculum editor (sections, lessons, ordering, publish rules), the quiz builder and grading service, progress tracking with the 90% watch threshold, and the PDF certificate generator with public verification. I also wrote the quiz analytics endpoint that produces the score distribution and per-question accuracy used by the instructor dashboard.
 
@@ -49,7 +49,7 @@ Suggested ownership split for this project:
 
 ---
 
-## Reflection D — Realtime, commerce & delivery — `[Your name]`
+## Reflection D — Realtime, commerce & delivery — Ruchit Gupta
 
 **What I owned.** I built the live-class flow (scheduling, role-scoped room tokens, the simulated and LiveKit paths), Socket.IO authentication, rooms, presence and persisted chat, and the payments slice: mock checkout, Stripe Checkout with a signed webhook, the idempotent order-to-ledger flow, refunds, and the instructor revenue dashboard with CSV export. I also assembled the documentation, test report, presentation outline and demo recording.
 
@@ -61,7 +61,7 @@ Suggested ownership split for this project:
 
 ---
 
-## Reflection prompts (for additional interns or weekly logs)
+## Reflection prompts (for weekly logs)
 
 1. **Ownership:** Which files or features were unmistakably yours? Name one decision you made that someone else would have made differently.
 2. **Learning:** What did you understand at the end of the project that you could not explain at the start? Be concrete — name a technology, a protocol or a design principle.
@@ -74,4 +74,4 @@ Suggested ownership split for this project:
 
 ## Team-level reflection
 
-As a team we deliberately chose breadth with depth in the hard places: every milestone in the brief has a working, testable implementation, and the two most technically risky areas — real HLS transcoding and idempotent payments — were given shared service layers rather than driver-specific shortcuts. The driver architecture was the key decision: it let us demo everything locally while still writing the CloudFront, BullMQ, Stripe and LiveKit code paths. The trade-off is that those production paths are exercised by compilation and code review rather than live cloud integration tests; that is the first thing we would add with real credentials and a staging environment.
+I deliberately chose breadth with depth in the hard places: every milestone in the brief has a working, testable implementation, and the two most technically risky areas — real HLS transcoding and idempotent payments — were given shared service layers rather than driver-specific shortcuts. The driver architecture was the key decision: it let me demo everything locally while still writing the CloudFront, BullMQ, Stripe and LiveKit code paths. The trade-off is that those production paths are exercised by compilation and code review rather than live cloud integration tests; that is the first thing I would add with real credentials and a staging environment.
