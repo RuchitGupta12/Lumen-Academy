@@ -6,10 +6,16 @@ import { logger } from './lib/logger';
 import { ensureMediaDirs } from './lib/media';
 import { initSocket } from './realtime/socket';
 
-// Export the Express app so Vercel's Express runtime can wrap it. Locally we
-// also open a port so `npm run dev` / `npm start` work as before.
+// Export the Express app so Vercel's Express runtime can wrap it.
 export const app = createApp();
 export default app;
+
+// apps/api/package.json declares "type": "commonjs". Vercel's Express runtime
+// reads module.exports for CommonJS packages (not exports.default), so publish
+// the app in every form the runtime or a local tool might look for.
+module.exports = app;
+module.exports.default = app;
+module.exports.app = app;
 
 async function main() {
   ensureMediaDirs();
@@ -19,18 +25,6 @@ async function main() {
     initSocket(server);
   } catch (error) {
     logger.warn({ error }, 'socket.io unavailable in this runtime');
-  }
-
-  if (isVercel) {
-    try {
-      await connectDb();
-      logger.info('lumen api ready (vercel functions)');
-    } catch (error) {
-      // Keep the function alive: /health still answers and Runtime Logs show
-      // the real MongoDB error instead of a generic invocation failure.
-      logger.error({ error }, 'mongodb connection failed on vercel');
-    }
-    return;
   }
 
   await connectDb();
@@ -57,7 +51,16 @@ async function main() {
   process.on('SIGTERM', () => void shutdown('SIGTERM'));
 }
 
-main().catch((error) => {
-  logger.error({ error }, 'failed to start api');
-  if (!isVercel) process.exit(1);
-});
+if (isVercel) {
+  // Vercel owns the HTTP server and socket layer. Start only the database
+  // connection in the background; failures are logged but never crash the
+  // function, so /health stays answerable and Runtime Logs show the cause.
+  void connectDb()
+    .then(() => logger.info('lumen api ready (vercel functions)'))
+    .catch((error) => logger.error({ error }, 'mongodb connection failed on vercel'));
+} else {
+  main().catch((error) => {
+    logger.error({ error }, 'failed to start api');
+    process.exit(1);
+  });
+}
