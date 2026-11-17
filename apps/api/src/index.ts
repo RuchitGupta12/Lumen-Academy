@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { createApp } from './app';
+import { createApp } from './createApp';
 import { connectDb, disconnectDb } from './config/db';
 import { env, isLivekitEnabled, isVercel, isStripeEnabled } from './config/env';
 import { logger } from './lib/logger';

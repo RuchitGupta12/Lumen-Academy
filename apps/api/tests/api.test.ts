@@ -89,7 +89,7 @@ beforeAll(async () => {
   fs.mkdirSync(TEST_MEDIA, { recursive: true });
 
   const [{ createApp }, { connectDb }, bcrypt] = await Promise.all([
-    import('../src/app'),
+    import('../src/createApp'),
     import('../src/config/db'),
     import('bcryptjs'),
   ]);
