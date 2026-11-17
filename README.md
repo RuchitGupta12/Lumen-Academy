@@ -217,7 +217,7 @@ npm test            # 41/41 API tests
 
 Results are recorded in [`docs/test-report.md`](docs/test-report.md):
 
-- **41/41** automated API tests pass in ~4.3 s
+- **41/41** automated API tests pass (final verification: 5.87 s)
 - **41/41** runtime E2E checks pass against the seeded app
 - Catalog p95 **5.3 ms**, course detail p95 **4.8 ms**, playback ticket p95 **5.0 ms**
 - 360p HLS transcode of the 26 s source: **0.92 s**

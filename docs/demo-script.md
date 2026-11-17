@@ -78,7 +78,7 @@ Quote the numbers from [`test-report.md`](test-report.md):
 
 | Metric | Result |
 |---|---|
-| Automated API tests | **41 / 41 pass** (~4.3 s) |
+| Automated API tests | **41 / 41 pass** (final run 5.87 s) |
 | Runtime E2E checks | **41 / 41 pass** |
 | Typecheck + production build | Pass |
 | Catalog p95 / course detail p95 | 5.3 ms / 4.8 ms |

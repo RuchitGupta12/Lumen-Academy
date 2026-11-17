@@ -6,7 +6,7 @@
 |---|---|---|
 | TypeScript (API + web) | ✅ Pass | `npm run typecheck` — no errors |
 | Production build | ✅ Pass | `npm run build` — Vite bundle emitted with code splitting |
-| Automated API suite | ✅ **41 / 41 pass** | `npm test` — Vitest + Supertest, ~4.3 s |
+| Automated API suite | ✅ **41 / 41 pass** | `npm test` — Vitest + Supertest, 5.87 s final run |
 | Runtime E2E checks | ✅ **41 / 41 pass** | CDP/HTTP harness against the seeded app |
 | Performance benchmark | ✅ All targets met | 60 requests/endpoint, local bundled MongoDB |
 | Transcode benchmark | ✅ 0.92 s | 360p HLS, 26 s source, bundled FFmpeg |
@@ -25,10 +25,10 @@ npm test
 ```
 
 ```
- ✓ tests/api.test.ts (41 tests) 4074ms
+ ✓ tests/api.test.ts (41 tests) 5870ms
  Test Files  1 passed (1)
       Tests  41 passed (41)
-   Duration  ~4.30s
+   Duration  5.87s (tests 99%, transform 1%)
 ```
 
 ### Coverage by area
