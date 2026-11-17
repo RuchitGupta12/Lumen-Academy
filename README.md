@@ -227,7 +227,7 @@ Results are recorded in [`docs/test-report.md`](docs/test-report.md):
 
 ## Notes and known constraints
 
-- **Vercel:** set Root Directory to the repository root, Build command `npm run build`, Output directory `apps/web/dist`, Install command `npm install`. `@lumen/shared` is also resolved through a TypeScript path mapping and a Vite alias, so a build from `apps/web` alone works too.
+- **Vercel:** deploy with the root `vercel.json` (Services mode). It routes `/api/*`, `/media/*`, `/socket.io/*` and `/health` to `api`, and everything else to `web`. `web` declares an `API_SERVICE_URL` binding to `api`; the Vite dev proxy uses the same variable when present and otherwise falls back to `http://localhost:4000`. `@lumen/shared` is also resolved through a TypeScript path mapping and a Vite alias, so a build from `apps/web` alone works too.
 - Prices are stored in **integer cents** everywhere; the UI formats them.
 - Certificate completion requires **100% of lessons** (a 90% watch threshold marks an individual video as watched).
 - Seed covers and lesson videos are generated locally, so the demo has no third-party asset dependencies.

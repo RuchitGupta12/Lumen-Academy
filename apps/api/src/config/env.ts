@@ -15,12 +15,16 @@ const int = (value: string | undefined, fallback: number) => {
 
 export const ROOT_DIR = path.resolve(__dirname, '../../../..');
 
+// Vercel exposes the deployment host at runtime; use it as the default browser
+// origin so CORS, Stripe redirects and certificate links work without extra config.
+const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '';
+
 export const env = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
   isProd: process.env.NODE_ENV === 'production',
   port: int(process.env.PORT, 4000),
   publicApiUrl: process.env.PUBLIC_API_URL ?? 'http://localhost:4000',
-  clientOrigin: process.env.CLIENT_ORIGIN ?? 'http://localhost:5173',
+  clientOrigin: process.env.CLIENT_ORIGIN?.trim() || vercelUrl || 'http://localhost:5173',
 
   mongoUri: process.env.MONGODB_URI?.trim() ?? '',
   accessSecret: process.env.JWT_ACCESS_SECRET ?? 'dev-access-secret-change-me',

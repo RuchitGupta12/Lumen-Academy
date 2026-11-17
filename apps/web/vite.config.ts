@@ -8,6 +8,10 @@ import tailwindcss from '@tailwindcss/vite';
 // builds also work when an install only sees apps/web (e.g. Vercel).
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
+// In Vercel services mode the api service binding is injected as API_SERVICE_URL.
+// Locally there is no binding, so fall back to the bundled dev server on :4000.
+const apiTarget = process.env.API_SERVICE_URL || 'http://localhost:4000';
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
@@ -18,9 +22,9 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': { target: 'http://localhost:4000', changeOrigin: true },
-      '/media': { target: 'http://localhost:4000', changeOrigin: true },
-      '/socket.io': { target: 'http://localhost:4000', changeOrigin: true, ws: true },
+      '/api': { target: apiTarget, changeOrigin: true },
+      '/media': { target: apiTarget, changeOrigin: true },
+      '/socket.io': { target: apiTarget, changeOrigin: true, ws: true },
     },
   },
   build: {
